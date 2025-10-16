@@ -18,32 +18,24 @@ class PdfViewerActivity : AppCompatActivity() {
         val imageView = ImageView(this)
         setContentView(imageView)
 
-        val filePath = intent.getStringExtra("file_path") ?: return
+        val filePath = intent.getStringExtra("file_path") ?: return // ou finish()
 
         val file = File(filePath)
-        if (!file.exists()) {
-            finish() // Close activity if file does not exist
-            return
-        }
+
+        if (!file.exists()) finish()
 
         parcelFileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
         pdfRenderer = PdfRenderer(parcelFileDescriptor!!)
 
         currentPage = pdfRenderer!!.openPage(0)
-        val bitmap = Bitmap.createBitmap(
-            currentPage!!.width,
-            currentPage!!.height,
-            Bitmap.Config.ARGB_8888
-        )
-
+        val bitmap = Bitmap.createBitmap(currentPage!!.width, currentPage!!.height, Bitmap.Config.ARGB_8888)
         currentPage!!.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-
         imageView.setImageBitmap(bitmap)
-        currentPage!!.close()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        currentPage?.close()
         pdfRenderer?.close()
         parcelFileDescriptor?.close()
     }
