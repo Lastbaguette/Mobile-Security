@@ -34,18 +34,18 @@ fun BookButtons(
                     if (file != null) {
                         onDownloadComplete?.invoke(file)
                     } else {
-                        snackbarHostState.showSnackbar("Échec du téléchargement")
+                        snackbarHostState.showSnackbar("Error during download")
                     }
                 }
             } else {
                 scope.launch {
-                    snackbarHostState.showSnackbar("Aucun lien PDF pour ce livre")
+                    snackbarHostState.showSnackbar("No links PDF")
                 }
             }
         },
         modifier = modifier.fillMaxWidth()
     ) {
-        Text(text = "Télécharger ce livre")
+        Text(text = "Download this book")
     }
 
 }

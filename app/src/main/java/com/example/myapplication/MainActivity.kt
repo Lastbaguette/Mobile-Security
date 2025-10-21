@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val _saveUri = mutableStateOf<Uri?>(null) // Déclaration au bon niveau
+        val _saveUri = mutableStateOf<Uri?>(null)
 
         val directoryPickerLauncher = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
             uri?.let {
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     it,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
-                _saveUri.value = it  // Maintenant accessible ici
+                _saveUri.value = it
             }
         }
 
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         title = { Text("Open Library Search") },
                         actions = {
                             Button(onClick = { directoryPickerLauncher.launch(null) }) {
-                                Text("Choisir dossier")
+                                Text("Choose directory")
                             }
                         }
                     )
@@ -83,7 +83,7 @@ class MainActivity : ComponentActivity() {
                                     val response = ApiClient.apiService.searchBooks(query.trim())
                                     books = response.docs ?: emptyList()
                                 } catch (e: Exception) {
-                                    snackbarHostState.showSnackbar("Erreur réseau: ${e.localizedMessage}")
+                                    snackbarHostState.showSnackbar("Error network: ${e.localizedMessage}")
                                 }
                             }
                         },
@@ -101,9 +101,9 @@ class MainActivity : ComponentActivity() {
                                 elevation = CardDefaults.cardElevation(4.dp)
                             ) {
                                 Column(modifier = Modifier.padding(8.dp)) {
-                                    Text(text = "Titre: ${book.title ?: "Inconnu"}")
-                                    Text(text = "Auteur(s): ${book.author_name?.joinToString(", ") ?: "Inconnu"}")
-                                    Text(text = "Année: ${book.first_publish_year ?: "Inconnu"}")
+                                    Text(text = "Title: ${book.title ?: "Unknown"}")
+                                    Text(text = "Author(s): ${book.author_name?.joinToString(", ") ?: "Unknown"}")
+                                    Text(text = "Year: ${book.first_publish_year ?: "Unknown"}")
                                     Spacer(modifier = Modifier.height(8.dp))
                                     BookButtons(
                                         book,
@@ -142,7 +142,7 @@ class MainActivity : ComponentActivity() {
                                     },
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Text("Ouvrir le fichier téléchargé")
+                                    Text("Open file")
                                 }
                             }
                         }
